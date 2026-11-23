@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Floodlight – Sports, Live</title>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef2f7;--fg:#0e1a3a;--card:#fff;--mut:#55627f;--red:#c8102e;--yel:#e8a900;--grn:#1f8a4c;--line:#d5dbe7;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1330;--fg:#f2f5fb;--card:#121f45;--mut:#9aa8cc;--red:#ff3b56;--yel:#ffd23f;--grn:#3ddc84;--line:#24335f}}
+:root[data-theme="dark"]{--bg:#0a1330;--fg:#f2f5fb;--card:#121f45;--mut:#9aa8cc;--red:#ff3b56;--yel:#ffd23f;--grn:#3ddc84;--line:#24335f}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:500 17px/1.6 Barlow,system-ui,sans-serif}
+h1,h2,h3{font-family:"Big Shoulders Display",Impact,sans-serif;font-weight:900;line-height:.95;margin:0;letter-spacing:.01em}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;gap:6px;align-items:center;padding:10px 16px;background:var(--bg);border-bottom:2px solid var(--fg);overflow-x:auto}
+.logo{font:900 26px "Big Shoulders Display",Impact,sans-serif;margin-right:auto;white-space:nowrap}.logo i{color:var(--red);font-style:normal}
+nav a{color:var(--fg);text-decoration:none;padding:6px 14px;border-radius:99px;font-weight:600;white-space:nowrap}
+nav a.on{background:var(--fg);color:var(--bg)}nav a:focus-visible,button:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.page{display:none;max-width:1100px;margin:0 auto;padding:28px 18px 70px}.page.on{display:block;animation:in .5s ease}
+@keyframes in{from{opacity:0;transform:translateY(14px)}}
+#hero{position:relative;height:min(78vh,620px);background:#0a1330;overflow:hidden;border-radius:0 0 28px 28px;margin:-28px -18px 28px}
+#hero canvas{position:absolute;inset:0;width:100%;height:100%}
+#hero .t{position:absolute;left:5%;top:9%;color:#fff;max-width:620px;pointer-events:none}
+#hero h1{font-size:clamp(56px,11vw,128px)}#hero h1 span{color:#ffd23f}
+#hero p{color:#c9d3ee;margin:14px 0 0;max-width:420px}
+.btn{display:inline-block;background:var(--red);color:#fff;border:0;border-radius:99px;padding:12px 26px;font:700 17px Barlow,sans-serif;cursor:pointer;text-decoration:none;transition:transform .2s}
+.btn:hover{transform:scale(1.06) rotate(-1deg)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:22px 0}
+.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:20px;transition:transform .25s,border-color .25s}
+.card:hover{transform:translateY(-6px) rotate(-.6deg);border-color:var(--red)}
+.card h3{font-size:30px;margin-bottom:8px}.card p{margin:0;color:var(--mut)}
+.big{font:900 64px/1 "Big Shoulders Display",Impact,sans-serif;color:var(--red)}
+h2{font-size:clamp(40px,7vw,80px);margin-bottom:10px}.lead{color:var(--mut);max-width:620px}
+.bars div{display:grid;grid-template-columns:110px 1fr 50px;gap:10px;align-items:center;margin:9px 0}
+.bars b{height:16px;border-radius:9px;background:linear-gradient(90deg,var(--red),var(--yel));width:0;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+svg.pitch{width:100%;height:auto;border-radius:18px;display:block}
+select{font:600 16px Barlow,sans-serif;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--fg);width:100%}
+label{font-weight:600;font-size:14px;color:var(--mut)}
+.track{position:relative;height:190px;background:linear-gradient(#1f8a4c,#156b3a);border-radius:18px;overflow:hidden;margin:18px 0;cursor:pointer;user-select:none}
+.zone{position:absolute;left:16%;top:0;bottom:0;width:11%;background:rgba(255,210,63,.3);border:2px dashed #ffd23f}
+.ball{position:absolute;top:96px;width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#ff6b7f,#a20c26);box-shadow:0 0 14px #ff3b56}
+.bat{position:absolute;left:11%;bottom:18px;width:16px;height:130px;border-radius:8px 8px 4px 4px;background:linear-gradient(90deg,#e9c58a,#b98445);transform-origin:50% 100%;transform:rotate(-70deg);transition:transform .08s}
+.bat.sw{transform:rotate(55deg)}.res{position:absolute;right:16px;top:10px;font:900 44px "Big Shoulders Display",Impact,sans-serif;color:#fff;text-shadow:0 2px 8px #0008}
+.pill{display:inline-block;padding:3px 12px;border-radius:99px;background:var(--fg);color:var(--bg);font-weight:600;font-size:14px}
+footer{text-align:center;color:var(--mut);padding:24px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<nav aria-label="Main"><span class="logo">FLOOD<i>LIGHT</i></span>
+<a href="#home">Home</a><a href="#cricket">Cricket</a><a href="#football">Football</a><a href="#tennis">Tennis</a><a href="#coach">AI Coach</a><a href="#play">Play</a></nav>
+
+<section class="page" id="home"><div id="hero"><canvas id="cv"></canvas><div class="t"><h1>Every sport.<br><span>One stadium.</span></h1><p>Tap anywhere on the pitch to swing the bat. Explore cricket, football and tennis, then let the AI coach pick your next shot.</p><p style="pointer-events:auto"><a class="btn" href="#play">Play the timing game</a></p></div></div>
+<div class="grid"><div class="card"><div class="big" data-n="3500">0</div><h3>Million cricket fans</h3><p>The world’s second most followed sport.</p></div>
+<div class="card"><div class="big" data-n="250">0</div><h3>Million footballers</h3><p>Playing in over 200 countries.</p></div>
+<div class="card"><div class="big" data-n="263">0</div><h3>km/h serve record</h3><p>The fastest tennis serve ever recorded.</p></div></div></section>
+
+<section class="page" id="cricket"><h2>Cricket</h2><p class="lead">Eleven players, 22 yards, one red ball. Watch where a batter scores: the wagon wheel redraws itself on every visit.</p>
+<div class="grid"><div class="card"><h3>Formats</h3><p>Test (5 days), ODI (50 overs), T20 (20 overs, about 3 hours).</p></div><div class="card"><h3>The bat</h3><p>English willow, up to 38 inches long, with a sweet spot near the lower middle.</p></div><div class="card"><h3>Dismissals</h3><p>Bowled, caught, LBW, run out, stumped and more: ten ways in total.</p></div></div>
+<svg class="pitch" viewBox="0 0 600 340" role="img" aria-label="Wagon wheel of scoring shots"><rect width="600" height="340" fill="#156b3a"/><ellipse cx="300" cy="170" rx="270" ry="150" fill="none" stroke="#fff6" stroke-width="3"/><ellipse cx="300" cy="170" rx="130" ry="72" fill="none" stroke="#fff4" stroke-dasharray="6 6"/><rect x="288" y="120" width="24" height="100" fill="#d9c08a"/>
+<g id="wheel" stroke-width="4" stroke-linecap="round"></g></svg>
+<div class="card" style="margin-top:16px"><h3>Runs by shot</h3><div class="bars" data-bars='[["Cover drive",86],["Pull",72],["Sweep",58],["Straight",64],["Cut",49]]'></div></div></section>
+
+<section class="page" id="football"><h2>Football</h2><p class="lead">Watch a passing move build across the pitch: the ball travels the exact route a team would play.</p>
+<svg class="pitch" viewBox="0 0 600 360" role="img" aria-label="Animated passing move"><rect width="600" height="360" fill="#1f8a4c"/><g fill="none" stroke="#fff" stroke-width="2.5" opacity=".8"><rect x="20" y="20" width="560" height="320"/><line x1="300" y1="20" x2="300" y2="340"/><circle cx="300" cy="180" r="48"/><rect x="20" y="105" width="90" height="150"/><rect x="490" y="105" width="90" height="150"/></g>
+<g fill="#ffd23f" stroke="#0a1330" stroke-width="2"><circle cx="70" cy="180" r="11"/><circle cx="170" cy="90" r="11"/><circle cx="230" cy="250" r="11"/><circle cx="360" cy="140" r="11"/><circle cx="470" cy="210" r="11"/><circle cx="530" cy="150" r="11"/></g>
+<circle r="8" fill="#fff" stroke="#000" stroke-width="2"><animateMotion dur="7s" repeatCount="indefinite" path="M70 180 L170 90 L230 250 L360 140 L470 210 L530 150 L560 180 L530 150 L470 210 L360 140 L230 250 L170 90 L70 180"/></circle></svg>
+<div class="grid"><div class="card"><h3>4-3-3</h3><p>Wide forwards stretch the defense; the midfield three control tempo.</p></div><div class="card"><h3>Pressing</h3><p>Win the ball within six seconds of losing it, high up the pitch.</p></div><div class="card"><h3>Set pieces</h3><p>About one in three goals comes from a corner, free kick or penalty.</p></div></div></section>
+
+<section class="page" id="tennis"><h2>Tennis</h2><p class="lead">A game of margins: a few centimetres decide a point. Compare how the four majors play.</p>
+<div class="grid"><div class="card"><h3>Wimbledon</h3><p>Grass. Fast, low bounce.</p></div><div class="card"><h3>Roland Garros</h3><p>Clay. Slow, high bounce.</p></div><div class="card"><h3>US Open</h3><p>Hard court. True bounce.</p></div><div class="card"><h3>Australian Open</h3><p>Hard court. Played in summer heat.</p></div></div>
+<div class="card"><h3>Surface speed</h3><div class="bars" data-bars='[["Grass",90],["Hard",70],["Clay",45]]'></div></div></section>
+
+<section class="page" id="coach"><h2>AI Shot Coach</h2><p class="lead">Describe the delivery. The coach scores every shot and shows where the ball should go. <span class="pill">Rule-based demo: swap in a real model for live video analysis</span></p>
+<div class="grid"><div><label for="d">Delivery</label><select id="d"><option>Pace</option><option>Spin</option><option>Yorker</option><option>Bouncer</option></select></div>
+<div><label for="l">Line</label><select id="l"><option>Off stump</option><option>Middle</option><option>Leg stump</option></select></div>
+<div><label for="n">Length</label><select id="n"><option>Full</option><option>Good</option><option>Short</option></select></div></div>
+<div class="grid"><div class="card"><div class="big" id="shot">–</div><p id="why"></p><p style="margin-top:10px">Confidence <b id="conf"></b> · Risk <b id="risk"></b></p></div>
+<svg class="pitch" viewBox="0 0 300 300" role="img" aria-label="Recommended shot direction"><circle cx="150" cy="150" r="140" fill="#156b3a"/><circle cx="150" cy="150" r="70" fill="none" stroke="#fff5" stroke-dasharray="5 5"/><rect x="141" y="125" width="18" height="50" fill="#d9c08a"/><line id="arr" x1="150" y1="150" x2="150" y2="150" stroke="#ffd23f" stroke-width="6" stroke-linecap="round" style="transition:all .8s cubic-bezier(.2,.8,.2,1)"/><circle id="dot" cx="150" cy="150" r="9" fill="#ff3b56" style="transition:all .8s cubic-bezier(.2,.8,.2,1)"/></svg></div></section>
+
+<section class="page" id="play"><h2>Timing Game</h2><p class="lead">Click, tap or press Space when the ball enters the yellow zone. Each hit makes the next ball faster.</p>
+<div class="track" id="tr" tabindex="0" role="button" aria-label="Swing the bat"><div class="zone"></div><div class="bat" id="bat"></div><div class="ball" id="ball"></div><div class="res" id="res"></div></div>
+<p>Score <b id="sc">0</b> · Best <b id="bs">0</b> · Streak <b id="st">0</b></p></section>
+<footer>Floodlight · built for the sports competition</footer>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+function route(){const h=(location.hash||'#home').slice(1);const id=$('#'+h)&&$('#'+h).classList.contains('page')?h:'home';
+$$('.page').forEach(p=>p.classList.toggle('on',p.id===id));$$('nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+id));scrollTo(0,0);enter(id)}
+function enter(id){const p=$('#'+id);
+p.querySelectorAll('[data-n]').forEach(e=>{const n=+e.dataset.n,t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/1400);e.textContent=Math.round(n*(1-Math.pow(1-k,3)));k<1&&requestAnimationFrame(f)})(t0)});
+p.querySelectorAll('[data-bars]').forEach(b=>{if(!b.children.length)JSON.parse(b.dataset.bars).forEach(([a,v])=>{const d=document.createElement('div');d.innerHTML=`<span>${a}</span><b></b><span>${v}</span>`;b.append(d);d._v=v});
+setTimeout(()=>[...b.children].forEach(d=>d.querySelector('b').style.width=d._v+'%'),60)});
+if(id==='cricket')wheel()}
+function wheel(){const g=$('#wheel');g.innerHTML='';const cols=['#ff3b56','#ffd23f','#fff','#6ee7ff'];
+for(let i=0;i<28;i++){const a=(i/28)*Math.PI*2+Math.random()*.2,r=60+Math.random()*95,l=document.createElementNS('http://www.w3.org/2000/svg','line');
+l.setAttribute('x1',300);l.setAttribute('y1',170);l.setAttribute('x2',300+Math.cos(a)*r*1.8);l.setAttribute('y2',170+Math.sin(a)*r);l.setAttribute('stroke',cols[i%4]);
+const L=Math.hypot(Math.cos(a)*r*1.8,Math.sin(a)*r);l.style.strokeDasharray=L;l.style.strokeDashoffset=L;l.style.transition=`stroke-dashoffset .8s ${i*60}ms ease-out`;g.append(l);
+requestAnimationFrame(()=>requestAnimationFrame(()=>l.style.strokeDashoffset=0))}}
+addEventListener('hashchange',route);route();
+
+/* Hero: bat hits ball */
+const cv=$('#cv'),cx=cv.getContext('2d');let W,H,T0=performance.now(),parts=[],trail=[],hitDone=false,flash=0,click=-9;
+function fit(){const r=cv.getBoundingClientRect(),d=devicePixelRatio||1;W=r.width;H=r.height;cv.width=W*d;cv.height=H*d;cx.setTransform(d,0,0,d,0,0)}
+addEventListener('resize',fit);fit();
+$('#hero').addEventListener('pointerdown',e=>{if(e.target.closest('a'))return;T0=performance.now()-1100;hitDone=false});
+const ez=k=>1-Math.pow(1-Math.max(0,Math.min(1,k)),3);
+function frame(now){if($('#home').classList.contains('on')){
+const t=((now-T0)/1000)%3.6,hx=W*.36,hy=H*.72,L=Math.min(W*.3,230),ae=.1,px=hx-L*.88*Math.cos(ae),py=hy-L*.88*Math.sin(ae);
+cx.clearRect(0,0,W,H);
+const g=cx.createRadialGradient(W*.7,-40,10,W*.7,H*.4,W*.8);g.addColorStop(0,'#2b4a9a');g.addColorStop(1,'#0a1330');cx.fillStyle=g;cx.fillRect(0,0,W,H);
+for(let i=0;i<4;i++){cx.fillStyle='rgba(255,255,255,.7)';cx.beginPath();cx.arc(W*(.55+i*.12),22,5,0,7);cx.fill()}
+cx.fillStyle='#156b3a';cx.fillRect(0,H*.8,W,H*.2);cx.fillStyle='#d9c08a';cx.fillRect(W*.1,H*.8,W*.8,6);
+let bx,by;if(t<1.5){const u=t/1.5;bx=W*1.05+(hx-W*1.05)*u;by=hy-110*Math.abs(Math.sin(u*Math.PI*1.5))*(1-u)}else{const s=t-1.5;bx=hx+s*W*.5;by=hy-s*H*.75+s*s*H*.3;
+if(!hitDone){hitDone=true;flash=1;for(let i=0;i<26;i++)parts.push({x:hx,y:hy,vx:(Math.random()-.2)*7,vy:(Math.random()-.8)*7,l:1})}}
+if(t<.05){hitDone=false;trail=[]}
+trail.push([bx,by]);if(trail.length>26)trail.shift();
+trail.forEach((p,i)=>{cx.fillStyle=`rgba(255,59,86,${i/trail.length*.5})`;cx.beginPath();cx.arc(p[0],p[1],9*i/trail.length,0,7);cx.fill()});
+cx.fillStyle='#ff3b56';cx.beginPath();cx.arc(bx,by,11,0,7);cx.fill();cx.strokeStyle='#fff';cx.lineWidth=1.5;cx.beginPath();cx.arc(bx,by,11,.6,2.4);cx.stroke();
+const a=ae-(1-ez((t-1.1)/.4))*2.7+(t>1.9?ez((t-1.9)/.8)*-1.2:0)+(t<1.1?Math.sin(t*5)*.04:0);
+cx.save();cx.translate(px,py);cx.rotate(a);cx.fillStyle='#8a5a2b';cx.fillRect(-26,-5,30,10);const bg=cx.createLinearGradient(0,-12,0,12);bg.addColorStop(0,'#f1d49c');bg.addColorStop(1,'#b98445');cx.fillStyle=bg;cx.beginPath();cx.roundRect(4,-12,L,24,6);cx.fill();cx.restore();
+cx.fillStyle='#fff';cx.beginPath();cx.arc(px-26,py,8,0,7);cx.fill();
+parts=parts.filter(p=>p.l>0);parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.2;p.l-=.025;cx.fillStyle=`rgba(255,210,63,${p.l})`;cx.fillRect(p.x,p.y,4,4)});
+if(flash>0){cx.fillStyle=`rgba(255,210,63,${flash})`;cx.font=`900 ${Math.min(W*.14,110)}px "Big Shoulders Display",Impact,sans-serif`;cx.textAlign='right';cx.fillText('SIX!',W*.94,H*.55-(1-flash)*30);flash-=.012}}
+requestAnimationFrame(frame)}requestAnimationFrame(frame);
+
+/* AI coach */
+const shots={Pace:{Full:['Cover drive','Lean into it, keep the head still.'],Good:['Forward defence','Respect the length, wait for width.'],Short:['Pull shot','Rock back, roll the wrists over the ball.']},
+Spin:{Full:['Sweep','Get low, meet the ball at the pitch.'],Good:['Lofted drive','Use your feet and clear the infield.'],Short:['Cut shot','Wait, then slice it behind square.']},
+Yorker:{Full:['Squeeze out','Dig the bat down, take the single.'],Good:['Scoop','Open the stance and flick over the keeper.'],Short:['Upper cut','Use the pace, aim over third man.']},
+Bouncer:{Full:['Straight drive','Rare gift: drive it back past the bowler.'],Good:['Hook shot','Eyes on the ball, keep it down.'],Short:['Leave or duck','Let it pass, the ball is above the shoulder.']}};
+const ang={'Off stump':-.5,'Middle':-1.57,'Leg stump':-2.6};
+function coach(){const d=$('#d').value,l=$('#l').value,n=$('#n').value,[s,w]=shots[d][n];
+const c=Math.round(62+(d.length*7+n.length*5+l.length*3)%31),r=['Low','Medium','High'][(c<72?2:c<84?1:0)];
+$('#shot').textContent=s;$('#why').textContent=w;$('#conf').textContent=c+'%';$('#risk').textContent=r;
+const a=ang[l]+(n==='Short'?.35:0),R=s==='Leave or duck'?10:120;
+const x=150+Math.cos(a)*R,y=150+Math.sin(a)*R;const A=$('#arr');A.setAttribute('x2',x);A.setAttribute('y2',y);$('#dot').setAttribute('cx',x);$('#dot').setAttribute('cy',y)}
+['d','l','n'].forEach(i=>$('#'+i).addEventListener('change',coach));coach();
+
+/* Timing game */
+let bx=0,sp=.45,run=true,sc=0,bs=0,st=0,swung=false,last=0;const tr=$('#tr'),ball=$('#ball'),bat=$('#bat'),res=$('#res');
+function reset(){bx=tr.clientWidth;swung=false;ball.style.opacity=1}
+function swing(){if(swung)return;swung=true;bat.classList.add('sw');setTimeout(()=>bat.classList.remove('sw'),220);
+const zl=tr.clientWidth*.16,zw=tr.clientWidth*.11,d=Math.abs(bx+13-(zl+zw/2)),k=d/(zw/2);let m;
+if(k<.35){m='SIX!';sc+=6;st++;sp*=1.07}else if(k<.8){m='FOUR';sc+=4;st++;sp*=1.04}else if(k<1.6){m='SINGLE';sc+=1;st++}else{m='MISS';st=0;sp=Math.max(.45,sp*.9)}
+res.textContent=m;ball.style.opacity=m==='MISS'?1:0;bs=Math.max(bs,sc);$('#sc').textContent=sc;$('#bs').textContent=bs;$('#st').textContent=st;
+if(m==='MISS')swung=false;else setTimeout(()=>{res.textContent='';reset()},700)}
+tr.addEventListener('pointerdown',swing);addEventListener('keydown',e=>{if(e.code==='Space'&&$('#play').classList.contains('on')){e.preventDefault();swing()}});
+function loop(t){const dt=t-last;last=t;if($('#play').classList.contains('on')){if(!bx)reset();if(!swung||ball.style.opacity==1){bx-=sp*dt*(tr.clientWidth/700)*1.3;if(bx<-30){res.textContent='MISS';st=0;sp=Math.max(.45,sp*.9);$('#st').textContent=0;setTimeout(()=>res.textContent='',600);reset()}}ball.style.left=bx+'px'}requestAnimationFrame(loop)}requestAnimationFrame(loop);
+</script></body></html>
